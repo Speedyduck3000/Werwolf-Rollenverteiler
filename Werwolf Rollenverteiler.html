@@ -7,17 +7,25 @@
     <script>
         function generateForm() {
             const selectedRoles = [];
-            const dorfRollen = ["Cupid", "Headhunter", "Dorfbewohner", "Cursed", "Seher", "Red Lady", "Serienkiller", "Brandstifter", "Narr", "Doc", "Bodyguard", "Hexe", "Tough guy", "Medico", 
+            const dorfRollen = ["Cupid", "Dorfbewohner", "Cursed", "Seher", "Red Lady", "Doc", "Bodyguard", "Hexe", "Tough guy", "Medico", 
             "Ritualist", "Alte Schrulle", "Blumenkind", "Priester", "Pazifist", "Schreihals"];
             const werwolfRollen = ["Werwolf", "Juniorwerwolf", "Wolfpazifist", "Puddingwolf", "Wolfseher", "Wolfschamane", "Kätzchenwolf", "Doppelwolf"]
+            const einzelkämpferRollen = ["Headhunter","Serienkiller", "Brandstifter", "Narr",]
             let checkBoxCounter = 1;
             const form = document.createElement("form");
             form.setAttribute("id", "roleForm");
 
-            const labelAzn = document.createElement("label");
-            labelAzn.textContent = "Wählen Sie Ihre Rollen aus";
-            form.appendChild(labelAzn);
+            var label1 = document.createElement("label");
+            label1.textContent = "Wählen Sie Ihre Rollen aus";
+            form.appendChild(label1);
             form.appendChild(document.createElement("br"));
+
+            form.appendChild(document.createElement("br"));
+            label2 = document.createElement("label");
+            label2.textContent = "Dorfrollen";
+            form.appendChild(label2);
+            form.appendChild(document.createElement("br"));
+            
 
             dorfRollen.forEach(label => {
                 const checkBox = document.createElement("input");
@@ -34,6 +42,12 @@
 
                 checkBoxCounter++;
             });
+            form.appendChild(document.createElement("br"));
+            const label3 = document.createElement("label");
+            label3.textContent = "Werwolfsrollen";
+            form.appendChild(label3);
+            form.appendChild(document.createElement("br"));
+            
 
             werwolfRollen.forEach(label => {
                 const checkBox = document.createElement("input");
@@ -50,6 +64,13 @@
 
                 checkBoxCounter++;
             });
+
+            form.appendChild(document.createElement("br"));
+            const label4 = document.createElement("label");
+            label4.textContent = "Einzelkämpferrollen";
+            form.appendChild(label4);
+            form.appendChild(document.createElement("br"));
+            
 
             einzelkämpferRollen.forEach(label => {
                 const checkBox = document.createElement("input");
@@ -104,7 +125,7 @@
                     }
 
                     // Mische das Array der Spielerindizes zufällig
-                    playerIndices.sort(() => Math.random() - 0.5);
+                    playerIndices.sort(() => Math.random() - 1);
 
                     // Iteriere durch die ausgewählten Rollen und weise jedem Spieler eine Rolle zu
                     for (let i = 0; i < selectedRoles.length; i++) {
@@ -150,6 +171,7 @@
     </script>
 </head>
 <body>
+    <img src="https://img.freepik.com/fotos-premium/entzueckender-baby-werwolf-im-kawaii-stil-auf-weissem-hintergrund_337384-28251.jpg">
     <button onclick="generateForm()">Formular generieren</button>
     <button onClick="window.location.href=window.location.href">Seite neu laden</button>
 </body>
