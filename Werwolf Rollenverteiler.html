@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rollenverteiler</title>
+    <script>
+        function generateForm() {
+            const selectedRoles = [];
+            const dorfRollen = ["Cupid", "Headhunter", "Dorfbewohner", "Cursed", "Seher", "Red Lady", "Serienkiller", "Brandstifter", "Narr", "Doc", "Bodyguard", "Hexe", "Tough guy", "Medico", 
+            "Ritualist", "Alte Schrulle", "Blumenkind", "Priester", "Pazifist", "Schreihals"];
+            const werwolfRollen = ["Werwolf", "Juniorwerwolf", "Wolfpazifist", "Puddingwolf", "Wolfseher", "Wolfschamane", "Kätzchenwolf", "Doppelwolf"]
+            let checkBoxCounter = 1;
+            const form = document.createElement("form");
+            form.setAttribute("id", "roleForm");
+
+            const labelAzn = document.createElement("label");
+            labelAzn.textContent = "Wählen Sie Ihre Rollen aus";
+            form.appendChild(labelAzn);
+            form.appendChild(document.createElement("br"));
+
+            dorfRollen.forEach(label => {
+                const checkBox = document.createElement("input");
+                checkBox.setAttribute("type", "checkbox");
+                checkBox.setAttribute("id", "checkbox" + checkBoxCounter);
+                checkBox.setAttribute("value", label);
+                form.appendChild(checkBox);
+
+                const labelCheckBox = document.createElement("label");
+                labelCheckBox.textContent = label;
+                labelCheckBox.setAttribute("for", "checkbox" + checkBoxCounter);
+                form.appendChild(labelCheckBox);
+                form.appendChild(document.createElement("br"));
+
+                checkBoxCounter++;
+            });
+
+            werwolfRollen.forEach(label => {
+                const checkBox = document.createElement("input");
+                checkBox.setAttribute("type", "checkbox");
+                checkBox.setAttribute("id", "checkbox" + checkBoxCounter);
+                checkBox.setAttribute("value", label);
+                form.appendChild(checkBox);
+
+                const labelCheckBox = document.createElement("label");
+                labelCheckBox.textContent = label;
+                labelCheckBox.setAttribute("for", "checkbox" + checkBoxCounter);
+                form.appendChild(labelCheckBox);
+                form.appendChild(document.createElement("br"));
+
+                checkBoxCounter++;
+            });
+
+            einzelkämpferRollen.forEach(label => {
+                const checkBox = document.createElement("input");
+                checkBox.setAttribute("type", "checkbox");
+                checkBox.setAttribute("id", "checkbox" + checkBoxCounter);
+                checkBox.setAttribute("value", label);
+                form.appendChild(checkBox);
+
+                const labelCheckBox = document.createElement("label");
+                labelCheckBox.textContent = label;
+                labelCheckBox.setAttribute("for", "checkbox" + checkBoxCounter);
+                form.appendChild(labelCheckBox);
+                form.appendChild(document.createElement("br"));
+
+                checkBoxCounter++;
+            });
+
+            const labelAnzahlSpieler = document.createElement("label");
+            labelAnzahlSpieler.textContent = "Anzahl der Spieler:";
+            form.appendChild(labelAnzahlSpieler);
+
+            const inputAnzahlSpieler = document.createElement("input");
+            inputAnzahlSpieler.setAttribute("type", "number");
+            inputAnzahlSpieler.setAttribute("id", "inputAnzahlSpieler");
+            inputAnzahlSpieler.setAttribute("min", "1");
+            form.appendChild(inputAnzahlSpieler);
+            form.appendChild(document.createElement("br"));
+
+            const submitButton = document.createElement("button");
+            submitButton.setAttribute("type", "button");
+            submitButton.textContent = "OK";
+            submitButton.addEventListener("click", function() {
+                const AnzahlSpieler = parseInt(document.getElementById("inputAnzahlSpieler").value);
+                if (AnzahlSpieler >= 1) {
+                    // Rollen auswählen
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                    checkboxes.forEach(checkbox => {
+                        selectedRoles.push(checkbox.value);
+                    });
+
+                    // Zufälliges Mischen der ausgewählten Rollen
+                    selectedRoles.sort(() => Math.random() - 0.25);
+
+                    // Ergebnisse anzeigen
+                    const resultList = document.getElementById("resultList");
+                    resultList.innerHTML = "";
+
+                    // Erstelle ein Array von Spielerindizes
+                    const playerIndices = [];
+                    for (let j = 1; j <= AnzahlSpieler; j++) {
+                        playerIndices.push(j);
+                    }
+
+                    // Mische das Array der Spielerindizes zufällig
+                    playerIndices.sort(() => Math.random() - 0.5);
+
+                    // Iteriere durch die ausgewählten Rollen und weise jedem Spieler eine Rolle zu
+                    for (let i = 0; i < selectedRoles.length; i++) {
+                        const role = selectedRoles[i];
+                        if (!isRoleAlreadyAdded(role, resultList)) {
+                            const listItem = document.createElement("li");
+                            const playerIndex = playerIndices[i];
+                            if (typeof playerIndex !== 'undefined') {
+                                listItem.textContent = "Rolle: " + role + ", Spieler: " + playerIndex;
+                                resultList.appendChild(listItem);
+                            } else {
+                                console.error("Nicht genügend Spieler!"); // Fehlermeldung anzeigen
+                            }
+                        }
+                    }
+                } else {
+                    alert("Bitte geben Sie eine gültige Anzahl von Spielern ein (mindestens 1).");
+                }
+            });
+            form.appendChild(submitButton);
+
+            document.body.appendChild(form);
+
+            // Erstellen einer Liste für die Ergebnisse
+            const resultHeader = document.createElement("h3");
+            resultHeader.textContent = "Ergebnisse:";
+            document.body.appendChild(resultHeader);
+            const resultList = document.createElement("ul");
+            resultList.setAttribute("id", "resultList");
+            document.body.appendChild(resultList);
+        }
+
+        // Funktion zur Überprüfung, ob eine Rolle bereits in der Ergebnisliste hinzugefügt wurde
+        function isRoleAlreadyAdded(role, resultList) {
+            const listItems = resultList.getElementsByTagName("li");
+            for (let i = 0; i < listItems.length; i++) {
+                if (listItems[i].textContent.includes("Rolle: " + role)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="generateForm()">Formular generieren</button>
+    <button onClick="window.location.href=window.location.href">Seite neu laden</button>
+</body>
+</html>
